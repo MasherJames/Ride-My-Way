@@ -1,0 +1,101 @@
+.main_heading {
+    font-style: italic;
+    padding: 1rem;
+}
+
+#main_description_container {
+    position: absolute;
+    top: 40%;
+    left: 20%;
+}
+
+.header__nav {
+    position: absolute;
+    left: 80%;
+    top: 5%;
+}
+
+.auth__link {
+    text-decoration: none;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    color: white;
+}
+
+.auth__link:hover,
+.auth__link:active {
+    border-bottom: 2px solid #ccc;
+}
+
+.heading_2 {
+    margin-bottom: 1.5rem;
+}
+
+.header__link:link,
+.header__link:visited {
+    text-decoration: none;
+    border: 2px solid white;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.header__link:hover,
+.header__link:active {
+    background: white;
+    color: black;
+    box-shadow: 2px 2px 2px 2px rgb(43, 42, 42);
+}
+
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.212), rgba(0, 0, 0, 0.5)), url(backgroundImg/pexel.jpg);
+    height: 100vh;
+    color: rgb(255, 255, 255);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#how_it_works_steps_container {
+    display: flex;
+}
+
+#how_it_works_section {
+    height: 60vh;
+}
+
+.how_it_works_heading {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.steps_description {
+    margin: 0.5rem;
+}
+
+.how_it_works_steps {
+    background-color: rgb(245, 243, 243);
+    padding: 1.5rem;
+    margin: 0.7rem;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px gray;
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    height: 40vh;
+}
+
+.steps__heading {
+    padding-bottom: 0.5rem;
+    color: black;
+    border-bottom: 1px solid gray;
+    text-align: center;
+}
+
+.how_it_works_steps>ul {
+    list-style: none;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+}
