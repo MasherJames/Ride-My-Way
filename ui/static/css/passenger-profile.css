@@ -1,0 +1,101 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+
+/* navigation */
+
+.navigation {
+    background: linear-gradient(rgb(70, 65, 65), rgb(0, 0, 0));
+    display: flex;
+    flex-direction: column;
+}
+
+.copyright {
+    position: relative;
+    top: 57%;
+    padding: 1rem;
+}
+
+.nav__heading,
+.navs,
+.copyright {
+    color: white;
+    padding: 1rem;
+}
+
+.navs {
+    text-decoration: none;
+}
+
+.navs:hover {
+    background: gray;
+}
+
+.ride_total_offers {
+    display: flex;
+}
+
+
+/* offers */
+
+.ride_offers_info {
+    display: flex;
+    flex-direction: column;
+    width: 597px;
+}
+
+.total_offers {
+    position: relative;
+    left: 65%;
+    margin: 1rem;
+    background: rgb(85, 122, 165);
+    padding: 1rem;
+    border-radius: 6px;
+    color: white;
+}
+
+.digits {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.notifications {
+    position: relative;
+    left: 90%;
+    margin: 1rem;
+    font-size: 2rem;
+    color: blue;
+}
+
+.notifications>h5 {
+    color: black;
+    font-size: 1rem;
+}
+
+.offers_notifications {
+    display: flex;
+}
+
+.ride__offers {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70vw;
+    margin: 1.15rem 0 0 3rem;
+}
+
+.ride_offer_container {
+    margin: 0.7rem;
+    flex: 1 1 30%;
+    background: rgb(206, 206, 255);
+    box-shadow: 2px 2px 2px gray;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.ride_offer_container>h3,
+.ride_offer_container>p {
+    padding: 0.3rem;
+    color: black;
+}
