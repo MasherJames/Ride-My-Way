@@ -1,0 +1,39 @@
+section {
+    height: 100vh;
+    background: linear-gradient(rgb(8, 8, 37), rgb(5, 13, 22))
+}
+
+.request-heading {
+    text-align: center;
+    padding: 2rem;
+}
+
+.request-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.request {
+    display: flex;
+    justify-content: center;
+    /* margin: 0.5rem; */
+    border: 1px solid rgb(255, 251, 251);
+    padding: 1rem;
+}
+
+.flex__item {
+    flex: 1;
+}
+
+.response-link {
+    text-decoration: none;
+    padding: 0.5rem;
+    margin: 0.5 rem;
+    border: 1px solid gray;
+    border-radius: 8px;
+}
+
+.response-link:hover {
+    background: white;
+}
