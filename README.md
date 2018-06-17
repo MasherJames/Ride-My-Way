@@ -1,3 +1,5 @@
+![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+
 # Ride-My-Way
 
 Ride-my-way App is a carpooling application that provides drivers with the ability to create ride offers
