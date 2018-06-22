@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from config import config
-from .api_v1.views import RideOffers, SpecificRide
+from .api_v1.views import RideOffers, SpecificRide, MakeRequestRide
 from .auth.views import Login, Signup
 
 # from flask_jwt_extended import JWTManager
@@ -10,7 +10,6 @@ from .auth.views import Login, Signup
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
 
     from .api_v1 import api_bp as api_blueprint
     api = Api(api_blueprint)
@@ -28,5 +27,6 @@ def create_app(config_name):
     api_auth.add_resource(Signup, '/signup')
 
     api.add_resource(RideOffers, '/rides')
+    api.add_resource(MakeRequestRide, '/rides/<int:rideId>/requests')
     api.add_resource(SpecificRide, '/rides/<int:rideId>')
     return app
