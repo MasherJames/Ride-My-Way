@@ -9,11 +9,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 class Rides:
     ride_id = 1
 
-    def __init__(self, driver_name, start_from, ends_at, date_time):
+    def __init__(self, driver_name, _from, to, depature):
         self.driver_name = driver_name
-        self.start_from = start_from
-        self.ends_at = ends_at
-        self.date_time = date_time
+        self._from = _from
+        self.to = to
+        self.depature = depature
         self.id = Rides.ride_id
 
         Rides.ride_id += 1
@@ -22,9 +22,32 @@ class Rides:
         return {
             'ride_id': self.id,
             'driver_name': self.driver_name,
-            'start_from':  self.start_from,
-            'ends_at': self.ends_at,
-            'date_time': self.date_time
+            'from':  self._from,
+            'to': self.to,
+            'depature': self.depature
+        }
+
+
+class RideRequest:
+
+    ride_request_id = 1
+
+    def __init__(self, passenger_name, _from, to, depature):
+        self.passenger_name = passenger_name
+        self._from = _from
+        self.to = to
+        self.depature = depature
+        self.id = RideRequest.ride_request_id
+
+        RideRequest.ride_request_id += 1
+
+    def to_dict(self):
+        return {
+            'ride_id': self.id,
+            'passenger_name': self.passenger_name,
+            'from':  self._from,
+            'to': self.to,
+            'depature': self.depature
         }
 
 
@@ -33,5 +56,6 @@ class Rides:
 
 store = {
     'users': [],
-    'ride_offers': []
+    'ride_offers': [],
+    'ride_requests': []
 }
