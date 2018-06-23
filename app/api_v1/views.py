@@ -1,46 +1,43 @@
-from flask_restful import Resource, reqparse
-import json
-from ..models import Rides, RideRequest, store
-# from flask_jwt_extended import (
-#     create_access_token,
-#     get_jwt_identity, jwt_required
-# )
+from flask_restful import Resource, reqparse, abort
+from flask_jwt_extended import (
+    create_access_token,
+    get_jwt_identity, jwt_required
+)
+from ..models import Rides, RideRequest, store, get_user_by_username, get_ride_by_id
 
 
 class RideOffers(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('driver_name', type=str, required=True,
-                        help='This field cannot be left blank')
     parser.add_argument('from', type=str, required=True,
                         help='This field cannot be left blank')
     parser.add_argument('to', type=str, required=True,
                         help='This field cannot be left blank')
     parser.add_argument('depature', type=str, required=True,
                         help='This field cannot be left blank')
-    # @jwt_required
 
     ''' creating a ride offer '''
-# Create a new ride offer
-
+    @jwt_required
     def post(self):
-        # current_user = get_jwt_identity()
         request_data = RideOffers.parser.parse_args()
 
-        driver_name = request_data['driver_name']
+        driver_name = get_jwt_identity()
+        current_user = get_user_by_username(driver_name)
+        if not current_user:
+            return {}, 401
         _from = request_data['from']
         to = request_data['to']
         depature = request_data['depature']
 
-        ride_offer = Rides(driver_name, _from, to, depature)
+        ride_offer = Rides(current_user, _from, to, depature)
 
         store['ride_offers'].append(ride_offer)
 
         return {'message': 'ride offer created succesfully'}, 201
 
     ''' getting all the ride offers '''
-# Get all the ride offers
 
+    @jwt_required
     def get(self):
         ride_offers = {
             "ride offers": [offer.to_dict() for offer in store['ride_offers']]
@@ -48,39 +45,37 @@ class RideOffers(Resource):
         return ride_offers, 200
 
 
-class SpecificRide(Resource):
+class RideOffer(Resource):
     ''' getting a specific ride offer depending on the id passed '''
-# Get a specific ride offer depending on the id
 
+    @jwt_required
     def get(self, rideId):
-        ride_offer = {
-            'ride_offer': [offer.to_dict() for offer in store['ride_offers']
-                           if offer.to_dict()['ride_id'] == rideId]
-        }
-        return ride_offer, 200
+        ride_offer = get_ride_by_id(rideId)
+        if not ride_offer:
+            return abort(404)
+        return ride_offer.to_dict(), 200
+
+    @jwt_required
+    def delete(self, rideId):
+        item = get_ride_by_id(rideId)
+        store['ride_offers'].remove(item)
+
+        return {'message': 'ride offer deleted successfully'}, 200
 
 
-class MakeRideRequest(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('passenger_name', required=True,
-                        help='This field cannot be left blank')
-    parser.add_argument('from', required=True,
-                        help='This field cannot be left blank')
-    parser.add_argument('to', required=True,
-                        help='This field cannot be left blank')
-    parser.add_argument('depature', required=True,
-                        help='This field cannot be left blank')
-    # Make a request to join a ride
+class Request(Resource):
 
+    '''Make a request to join aride'''
+    @jwt_required
     def post(self, rideId):
-        request_data = MakeRideRequest.parser.parse_args()
 
-        passenger_name = request_data['passenger_name']
-        _from = request_data['from']
-        to = request_data['to']
-        depature = request_data['depature']
+        ride = get_ride_by_id(rideId)
+        passenger_name = get_jwt_identity()
+        current_user = get_user_by_username(passenger_name)
+        if not current_user:
+            return {'message': 'unauthorized'}, 401
 
-        ride_request = RideRequest(passenger_name, _from, to, depature)
+        ride_request = RideRequest(current_user, ride)
 
         store['ride_requests'].append(ride_request)
 
