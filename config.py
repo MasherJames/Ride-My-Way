@@ -3,7 +3,8 @@ import os
 
 class Config:
     DEBUG = False
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    JWT_SECRET_KEY = os.getenv('SECRET')
+    # SECRET_KEY = os.getenv('SECRET_KEY')
     # @staticmethod
     # def init_app(app):
     #     pass
