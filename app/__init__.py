@@ -5,12 +5,15 @@ from config import config
 from .api_v1.views import RideOffers, RideOffer, Request
 from .auth.auth_views import Signup, Login
 
+jwt = JWTManager()
+
 
 def create_app(config_name):
     app = Flask(__name__)
-
     app.config.from_object(config[config_name])
-    JWTManager(app)
+
+    jwt.init_app(app)
+
     from .api_v1 import api_bp as api_blueprint
     api = Api(api_blueprint)
     app.register_blueprint(api_blueprint, url_prefix="/api/v1")
