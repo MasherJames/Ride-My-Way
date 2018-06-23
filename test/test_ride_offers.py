@@ -2,7 +2,7 @@
 from app import create_app
 import unittest
 import json
-from datetime import datetime
+# from datetime import datetime
 
 
 class TestRideOffers(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestRideOffers(unittest.TestCase):
                 "fullname": "james mash",
                 "email": "jamesmash@gmail.com",
                 "password": "qwerty",
-                "confirm-password": "qwerty"
+                "permission": 1
             },
             "login-cred": {
                 "email": "jamesmash@gmail.com",
@@ -31,7 +31,7 @@ class TestRideOffers(unittest.TestCase):
 
     def signup(self):
         response = self.client.post(
-            "/api/v1/auth/signup/",
+            "/api/v1/auth/signup",
             data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
@@ -52,37 +52,35 @@ class TestRideOffers(unittest.TestCase):
     get token function
     '''
 
-    def get_user_token(self):
-        self.signup()
-        response = self.login()
-        token = json.loads(response.data).get('token', None)
+    # def get_user_token(self):
+    #     self.signup()
+    #     response = self.login()
+    #     token = json.loads(response.data).get('token', None)
 
-        return token
+    #     return token
 
-    def test_user_get_token(self):
-        self.signup()
-        response = self.login()
-        self.assertEqual(response.status_code, 200)
+    # def test_user_get_token(self):
+    #     self.signup()
+    #     response = self.login()
+    #     self.assertEqual(response.status_code, 200)
 
-        self.assertIn('token', json.loads(response.data))
+    #     self.assertIn('token', json.loads(response.data))
 
     def test_user_can_view_all_ride_offers(self):
-        token = self.get_user_token()
+        # token = self.get_user_token()
 
         response = self.client.get(
             "/api/v1/rides",
-            headers={'content-type': 'application/json',
-                     'Authorization': 'Bearer {} '.format(token)}
+            headers={'content-type': 'application/json'}
         )
         self.assertEqual(response.status_code, 200)
 
     def test_user_can_view_a_specific_ride_offer(self):
-        token = self.get_user_token()
+        # token = self.get_user_token()
 
         response = self.client.get(
             "/api/v1/rides/<rideId >",
-            headers={'content-type': 'application/json',
-                     'Authorization': 'Bearer {} '.format(token)}
+            headers={'content-type': 'application/json'}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -103,18 +101,17 @@ class TestRideOffers(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_user_can_request_a_ride(self):
-        token = self.get_user_token()
+        # token = self.get_user_token()
 
         data = {
-            "name": "james mas",
-            "datetime": str(datetime.now()),
-            "from": "Rongai",
-            "to": "Burubur"
+            "name": "james",
+            "from": "meru",
+            "to": "Rongai",
+            "departure": " 12th nov 2018"
         }
 
         response = self.client.post(
-            "/rides/<rideId >/requests", data=json.dumps(data),
-            headers={'content-type': 'application/json',
-                     'Authorization': 'Bearer {} '.format(token)}
+            "/api/v1/rides/1/requests", data=json.dumps(data),
+            headers={'content-type': 'application/json'}
         )
-        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.status_code, 201)

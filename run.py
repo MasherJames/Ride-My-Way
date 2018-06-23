@@ -8,4 +8,4 @@ app = create_app(os.getenv('MODE') or 'default')
 def test():
     import unittest
     t = unittest.TestLoader().discover('test')
-    unittest.TextTestRunner(verbosity=1).run(t)
+    unittest.TextTestRunner(verbosity=3).run(t)

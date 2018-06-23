@@ -1,9 +1,9 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
-# class Permissions:
-#     'driver': 1
-#     'passenger': 2
+user = {
+    'passenger': 1,
+    'driver': 2
+}
 
 
 class Rides:
@@ -51,7 +51,47 @@ class RideRequest:
         }
 
 
-# class User:
+class UserRegister:
+
+    user_id = 1
+
+    def __init__(self, username, email, password, permission=user['passenger']):
+        self.username = username
+        self.email = email
+        self.password_hash = generate_password_hash(password)
+        self.id = UserRegister.user_id
+        self.permission = permission
+
+        UserRegister.user_id += 1
+
+    def to_dict(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+            'password':  self.password_hash,
+            'id': self.id,
+            'permission': self.permission
+        }
+
+    # checks password hash is equal to password
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    # checks if the user is a driver
+    def check_for_driver(self):
+        return self.permission == user['driver']
+
+
+class UserLogin:
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+    def to_dict(self):
+        return {
+            'email': self.email,
+            'password': self.password
+        }
 
 
 store = {

@@ -1,18 +1,18 @@
-from app import app
+from app import create_app
 import unittest
 import json
 
 
 class TestRideOffers(unittest.TestCase):
     def setUp(self):
-        app.testing = True
-        self.client = app.test_client()
+        self.app = create_app('testing')
+        self.client = self.app.test_client()
         self.data = {
             "signup-cred": {
-                "fullname": "james macharia",
+                "username": "macharia",
                 "email": "jamesmasher@gmail.com",
                 "password": "qwerty",
-                "repeat-password": "qwerty"
+                "permission": "1"
             },
 
             "login-cred": {
@@ -24,22 +24,22 @@ class TestRideOffers(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def signup(self):
+    def test_signup(self):
         response = self.client.post(
-            "/api/v1/auth/signup/", data=json.dumps(self.data['signup-cred']),
+            "/api/v1/auth/signup", data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
         self.assertEqual(response.status_code, 201)
 
-    def login(self):
+    def test_login(self):
         response = self.client.post(
-            "/api/v1/auth/signup/", data=json.dumps(self.data),
+            "/api/v1/auth/login", data=json.dumps(self.data),
             headers={'content-type': 'application/json'}
         )
         self.assertEqual(response.status_code, 201)
 
         response = self.client.post(
-            "/api/v1/auth/login/", data=json.dumps(self.data),
+            "/api/v1/auth/login", data=json.dumps(self.data),
             headers={'content-type': 'application/json'}
         )
         self.assertEqual(response.status_code, 200)

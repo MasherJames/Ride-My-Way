@@ -1,16 +1,16 @@
 from flask import Flask
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
 from config import config
-from .api_v1.views import RideOffers, SpecificRide, MakeRequestRide
-from .auth.views import Login, Signup
-
-# from flask_jwt_extended import JWTManager
+from .api_v1.views import RideOffers, RideOffer, Request
+from .auth.auth_views import Signup, Login
 
 
 def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
 
+    app.config.from_object(config[config_name])
+    JWTManager(app)
     from .api_v1 import api_bp as api_blueprint
     api = Api(api_blueprint)
     app.register_blueprint(api_blueprint, url_prefix="/api/v1")
@@ -23,10 +23,10 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint, url_prefix="/api/v1/auth")
 
     # Url Routes
-    api_auth.add_resource(Login, '/login')
     api_auth.add_resource(Signup, '/signup')
+    api_auth.add_resource(Login, '/login')
 
     api.add_resource(RideOffers, '/rides')
-    api.add_resource(MakeRequestRide, '/rides/<int:rideId>/requests')
-    api.add_resource(SpecificRide, '/rides/<int:rideId>')
+    api.add_resource(Request, '/rides/<int:rideId>/requests')
+    api.add_resource(RideOffer, '/rides/<int:rideId>')
     return app

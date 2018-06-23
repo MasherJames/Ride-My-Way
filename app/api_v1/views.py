@@ -54,25 +54,26 @@ class SpecificRide(Resource):
 
     def get(self, rideId):
         ride_offer = {
-            'ride_offer': [offer.to_dict() for offer in store['ride_offers'] if offer.to_dict()['ride_id'] == rideId][0]
+            'ride_offer': [offer.to_dict() for offer in store['ride_offers']
+                           if offer.to_dict()['ride_id'] == rideId]
         }
         return ride_offer, 200
 
 
-class MakeRequestRide(Resource):
+class MakeRideRequest(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('passenger_name', type=str, required=True,
+    parser.add_argument('passenger_name', required=True,
                         help='This field cannot be left blank')
-    parser.add_argument('from', type=str, required=True,
+    parser.add_argument('from', required=True,
                         help='This field cannot be left blank')
-    parser.add_argument('to', type=str, required=True,
+    parser.add_argument('to', required=True,
                         help='This field cannot be left blank')
-    parser.add_argument('depature', type=str, required=True,
+    parser.add_argument('depature', required=True,
                         help='This field cannot be left blank')
     # Make a request to join a ride
 
     def post(self, rideId):
-        request_data = MakeRequestRide.parser.parse_args()
+        request_data = MakeRideRequest.parser.parse_args()
 
         passenger_name = request_data['passenger_name']
         _from = request_data['from']
