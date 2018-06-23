@@ -9,8 +9,8 @@ user = {
 class Rides:
     ride_id = 1
 
-    def __init__(self, driver_name, _from, to, depature):
-        self.driver_name = driver_name
+    def __init__(self, driver, _from, to, depature):
+        self.driver = driver
         self._from = _from
         self.to = to
         self.depature = depature
@@ -21,7 +21,7 @@ class Rides:
     def to_dict(self):
         return {
             'ride_id': self.id,
-            'driver_name': self.driver_name,
+            'driver': self.driver.to_dict(),
             'from':  self._from,
             'to': self.to,
             'depature': self.depature
@@ -32,11 +32,9 @@ class RideRequest:
 
     ride_request_id = 1
 
-    def __init__(self, passenger_name, _from, to, depature):
-        self.passenger_name = passenger_name
-        self._from = _from
-        self.to = to
-        self.depature = depature
+    def __init__(self, user, ride):
+        self.user = user
+        self.ride = ride
         self.id = RideRequest.ride_request_id
 
         RideRequest.ride_request_id += 1
@@ -44,10 +42,8 @@ class RideRequest:
     def to_dict(self):
         return {
             'ride_id': self.id,
-            'passenger_name': self.passenger_name,
-            'from':  self._from,
-            'to': self.to,
-            'depature': self.depature
+            'user': self.user.to_dict(),
+            'ride': self.ride.to_dict()
         }
 
 
@@ -68,7 +64,6 @@ class UserRegister:
         return {
             'username': self.username,
             'email': self.email,
-            'password':  self.password_hash,
             'id': self.id,
             'permission': self.permission
         }
@@ -83,13 +78,13 @@ class UserRegister:
 
 
 class UserLogin:
-    def __init__(self, email, password):
-        self.email = email
+    def __init__(self, username, password):
+        self.username = username
         self.password = password
 
     def to_dict(self):
         return {
-            'email': self.email,
+            'username': self.username,
             'password': self.password
         }
 
@@ -99,3 +94,16 @@ store = {
     'ride_offers': [],
     'ride_requests': []
 }
+
+
+def get_user_by_username(username):
+    for user in store['users']:
+        if user.username == username:
+            return user
+
+
+def get_ride_by_id(ride_id):
+    for ride in store['ride_offers']:
+        print(ride.ride_id, ride_id)
+        if ride.ride_id == ride_id:
+            return ride
