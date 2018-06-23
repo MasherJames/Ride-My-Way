@@ -1,4 +1,5 @@
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+[![Build Status](https://travis-ci.org/MasherJames/Ride-My-Way.svg?branch=ch-challenge-two-develop-158460445)]
 
 # Ride-My-Way
 
