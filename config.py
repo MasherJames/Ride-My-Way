@@ -4,9 +4,6 @@ import os
 class Config:
     DEBUG = False
     SECRET_KEY = os.getenv('SECRET_KEY')
-    # @staticmethod
-    # def init_app(app):
-    #     pass
 
 
 class DevelopmentConfig(Config):
