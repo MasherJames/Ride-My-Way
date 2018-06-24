@@ -12,7 +12,7 @@ class TestRideOffers(unittest.TestCase):
                 "username": "macharia",
                 "email": "jamesmash@gmail.com",
                 "password": "qwerty",
-                "permission": 1
+                "permission": "1"
             },
             "login-cred": {
                 "username": "macharia",
@@ -22,7 +22,6 @@ class TestRideOffers(unittest.TestCase):
 
     def tearDown(self):
         pass
-
     '''
     sign up function
     '''
@@ -33,7 +32,6 @@ class TestRideOffers(unittest.TestCase):
             data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
-
         return response
 
     '''
@@ -48,11 +46,6 @@ class TestRideOffers(unittest.TestCase):
         )
 
         return response
-
-    def test_signup(self):
-        response = self.signup()
-
-        self.assertEqual(response.status_code, 201)
 
     def test_login(self):
         ''' signup a user first '''
@@ -93,7 +86,7 @@ class TestRideOffers(unittest.TestCase):
         token = self.get_user_token()
 
         response = self.client.get(
-            "/api/v1/rides/<rideId>",
+            "/api/v1/rides/1",
             headers={'content-type': 'application/json',
                      'Authorization': 'Bearer {}'.format(token)}
         )
