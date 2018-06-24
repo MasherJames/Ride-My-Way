@@ -20,7 +20,7 @@ class Rides:
 
     def to_dict(self):
         return {
-            'ride_id': self.id,
+            'id': self.id,
             'driver': self.driver.to_dict(),
             'from':  self._from,
             'to': self.to,
@@ -41,7 +41,7 @@ class RideRequest:
 
     def to_dict(self):
         return {
-            'ride_id': self.id,
+            'id': self.id,
             'user': self.user.to_dict(),
             'ride': self.ride.to_dict()
         }
@@ -104,6 +104,5 @@ def get_user_by_username(username):
 
 def get_ride_by_id(ride_id):
     for ride in store['ride_offers']:
-        print(ride.ride_id, ride_id)
-        if ride.ride_id == ride_id:
+        if ride.id == ride_id:
             return ride
