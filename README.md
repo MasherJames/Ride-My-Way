@@ -1,6 +1,6 @@
 ![license](https://img.shields.io/github/license/mashape/apistatus.svg)
 [![Build Status](https://travis-ci.org/MasherJames/Ride-My-Way.svg?branch=ch-challenge-two-develop-158460445)](https://travis-ci.org/MasherJames/Ride-My-Way)
-[![Coverage Status](https://coveralls.io/repos/github/MasherJames/Ride-My-Way/badge.svg?branch=develop)](https://coveralls.io/github/MasherJames/Ride-My-Way?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/MasherJames/Ride-My-Way/badge.svg?branch=ch-challenge-two-develop-158460445)](https://coveralls.io/github/MasherJames/Ride-My-Way?branch=ch-challenge-two-develop-158460445)
 
 # Ride-My-Way
 
