@@ -2,7 +2,8 @@ language: python
 
 python:
   - "3.6"
-
+env:
+  - SECRET_KEY="iwyfyeyytyuriytruytrutyru"
 install:
   - pip install -r requirements.txt
   - pip install coveralls
