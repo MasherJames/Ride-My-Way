@@ -49,10 +49,10 @@ class TestRideOffers(unittest.TestCase):
 
         return response
 
-    # def test_signup(self):
-    #     response = self.signup()
+    def test_signup(self):
+        response = self.signup()
 
-    #     self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
 
     def test_login(self):
         ''' signup a user first '''
