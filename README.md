@@ -35,7 +35,7 @@ git clone git@github.com:MasherJames/Ride-My-Way.git
 
 # API
 
-## _ Prerequisites_
+## _Prerequisites_
 
 - Python 3.6
 - Flask
@@ -59,22 +59,15 @@ flask run
 
 ## Endpoints to test
 
-| Method       | Endpoint                            | Description                                             |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| POST         | /api/v1/auth/signup                 | sign up a user                                          |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| POST         | /api/v1/auth/login                  | login a user                                            |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| POST         | /api/v1/rides                       | post a ride offer                                       |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| GET          | /api/v1/rides                       | get all ride offers                                     |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| GET          | /api/v1/rides/<rideId>              | get a specific ride offer depending on it's id          |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| POST         | /api/v1/rides/<rideId>/requests     | request to join a specific ride offer                   |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
-| DELETE       | /api/v1/rides/<rideId>              | delete a specific ride offer                            |
-| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| Method | Endpoint                        | Description                                    |
+| ------ | ------------------------------- | ---------------------------------------------- |
+| POST   | /api/v1/auth/signup             | sign up a user                                 |
+| POST   | /api/v1/auth/login              | login a user                                   |
+| POST   | /api/v1/rides                   | post a ride offer                              |
+| GET    | /api/v1/rides                   | get all ride offers                            |
+| GET    | /api/v1/rides/<rideId>          | get a specific ride offer depending on it's id |
+| POST   | /api/v1/rides/<rideId>/requests | request to join a specific ride offer          |
+| DELETE | /api/v1/rides/<rideId>          | delete a specific ride offer                   |
 
 ### Languages and tools used
 
