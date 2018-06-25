@@ -32,3 +32,62 @@ git clone git@github.com:MasherJames/Ride-My-Way.git
 
 - cd Ride-My-Way/ui
 - Open `index.html` in your favorite browser
+
+# API
+
+## _ Prerequisites_
+
+- Python 3.6
+- Flask
+- Flaskrestfull
+- Virtualenv
+
+**Testing**
+
+```
+git clone -b ch-challenge-two-develop-158460445 git@github.com:MasherJames/Ride-My-Way.git
+```
+
+**Running the app**
+
+```
+export FLASK_APP = run.py
+export MODE = development
+
+flask run
+```
+
+## Endpoints to test
+
+| Method       | Endpoint                            | Description                                             |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| POST         | /api/v1/auth/signup                 | sign up a user                                          |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| POST         | /api/v1/auth/login                  | login a user                                            |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| POST         | /api/v1/rides                       | post a ride offer                                       |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| GET          | /api/v1/rides                       | get all ride offers                                     |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| GET          | /api/v1/rides/<rideId>              | get a specific ride offer depending on it's id          |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| POST         | /api/v1/rides/<rideId>/requests     | request to join a specific ride offer                   |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+| DELETE       | /api/v1/rides/<rideId>              | delete a specific ride offer                            |
+| ------------ | ----------------------------------- | ------------------------------------------------------- |
+
+### Languages and tools used
+
+- HTML5
+- CSS3
+- Python/Flask
+- Git and Github
+- Pivotal tracker
+
+### Author
+
+James Macharia
+
+### Acknowledgement
+
+Andela Bootcamp 29
