@@ -3,7 +3,7 @@ from flask_jwt_extended import (
     create_access_token,
     get_jwt_identity, jwt_required
 )
-from ..models import Rides, RideRequest, store, get_user_by_username, get_ride_by_id
+from ..models import Model, Rides, RideRequest, get_user_by_username, get_ride_by_id
 
 
 class RideOffers(Resource):
@@ -30,8 +30,8 @@ class RideOffers(Resource):
         depature = request_data['depature']
 
         ride_offer = Rides(current_user, _from, to, depature)
-
-        store['ride_offers'].append(ride_offer)
+        ride_offer.add_ride()
+        # store['ride_offers'].append(ride_offer)
 
         return {'message': 'ride offer created succesfully'}, 201
 
