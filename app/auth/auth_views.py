@@ -4,7 +4,7 @@ from flask_jwt_extended import (
     create_access_token,
     get_jwt_identity, jwt_required
 )
-from ..models import UserRegister, UserLogin, store
+# from ..models import UserRegister, UserLogin, store
 
 
 class Signup(Resource):
