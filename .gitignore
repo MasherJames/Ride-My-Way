@@ -1,6 +1,12 @@
-.vscode/
-.env
+.env_BACKUP_18536
+.env_BASE_18536
+.env_LOCAL_18536
+.env_REMOTE_18536
+__init__.pyc
+auth_views.py.orig
 env/
+.env
+.vscode/
 *.pyc
 __pycache__/
 .pytest_cache/
