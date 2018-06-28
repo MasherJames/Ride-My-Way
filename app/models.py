@@ -25,13 +25,15 @@ class Model:
         self.cursor.commit()
 
     def close_session(self):
+        self.cursor.close()
         self.connect.close()
 
 
-class Rides(Model):
+class Ride(Model):
+    """ Ride Model """
 
     def __init__(self, driver=None, _from=None, to=None, depature=None):
-        super(Model)
+        super().__init__()
         self.driver = driver
         self._from = _from
         self.to = to
@@ -47,6 +49,14 @@ class Rides(Model):
         )"""
         self.execute_query(create_ride_table_query)
 
+    def to_dict(self):
+        return {
+            'driver': self.driver.to_dict(),
+            'from':  self._from,
+            'to': self.to,
+            'depature': self.depature
+        }
+
     def add_ride(self):
         insert_ride_query = (
             """ INSERT INTO rides (driver, _from, to, departure)
@@ -60,15 +70,32 @@ class Rides(Model):
         get_ride_by_id_query = (
             """ SELECT * FROM rides WHERE id=(%s)""", (ride_id,)
         )
-        res = self.execute_query(get_ride_by_id_query)
-        user = res.fetchone()
+        data = self.execute_query(get_ride_by_id_query)
+        user = data.fetchone()
         return user
+
+    def get_all_rides(self):
+        get_all_rides_query = (
+            """ SELECT * FROM rides """
+        )
+        data = self.execute_query(get_all_rides_query)
+        rides = data.fetchall()
+
+        all_rides = [ride.to_dict() for ride in rides]
+        return all_rides
+
+    def delete_specific_ride(self, ride_id):
+        delete_specific_ride_query = (
+            """ DELETE FROM rides WHERE ride_id=%s """, (ride_id,)
+        )
+        self.execute_query(delete_specific_ride_query)
+        self.save()
 
 
 class RideRequest(Model):
 
     def __init__(self, user=None, ride=None):
-        super(Model)
+        super().__init__(Model)
         self.user = user
         self.ride = ride
 
@@ -80,6 +107,12 @@ class RideRequest(Model):
         )"""
         self.execute_query(create_request_table_query)
 
+    def to_dict(self):
+        return {
+            'user': self.user.to_dict(),
+            'ride': self.ride.to_dict()
+        }
+
     def add_ride_request(self):
         insert_ride_request_query = (
             """ INSERT INTO ride_requests (user, ride)
@@ -89,11 +122,22 @@ class RideRequest(Model):
         self.execute_query(insert_ride_request_query)
         self.save()
 
+    def get_all_ride_request(self):
+        get_all_ride_request_query = (
+            """ SELECT * FROM ride_requests """
+        )
+        data = self.execute_query(get_all_ride_request_query)
+        ride_rqsts = data.fetchall()
+
+        all_ride_requests = [ride_request.to_dict()
+                             for ride_request in ride_rqsts]
+        return all_ride_requests
+
 
 class UserRegister(Model):
 
     def __init__(self, username=None, email=None, password=None, permission=None):
-        super.__init__(Model)
+        super().__init__(Model)
         self.username = username
         self.email = email
         self.password_hash = generate_password_hash(password)
@@ -118,21 +162,10 @@ class UserRegister(Model):
         self.execute_query(insert_user_query)
         self.save()
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
     def get_user_by_username(self, username):
-        get_ride_by_name_query = (
-            """ SELECT * FROM user WHERE username=(%s)""", (username,)
+        get_user_by_name_query = (
+            """ SELECT * FROM users WHERE username=(%s)""", (username,)
         )
-        res = self.execute_query(get_ride_by_name_query)
-        user = res.fetchone()
+        data = self.execute_query(get_user_by_name_query)
+        user = data.fetchone()
         return user
-
-
-def get_user_by_username(self, nams):
-    pass
-
-
-def get_ride_by_id(self, id):
-    pass
