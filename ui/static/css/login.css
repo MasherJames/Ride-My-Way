@@ -1,5 +1,5 @@
 .login_section {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)), url(backgroundImg/login.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.514)), url(backgroundImg/login.jpg);
     height: 100vh;
 }
 

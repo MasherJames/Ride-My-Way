@@ -33,6 +33,7 @@ class PostRide(Resource):
         driver_name = get_jwt_identity()
         user = UserRegister()
         current_user = user.get_user_by_username(driver_name)
+
         if not current_user:
             return {}, 401
         _from = request_data['from']
@@ -69,7 +70,6 @@ class Request(Resource):
     '''Make a request to join aride'''
     @jwt_required
     def post(self, rideId):
-
         ride = Ride()
         ride_rq = ride.get_ride_by_id(rideId)
         passenger_name = get_jwt_identity()
