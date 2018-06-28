@@ -2,7 +2,9 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from config import config
-from .api_v1.views import RideOffers, RideOffer, Request
+from .api_v1.views import (
+    RideOffers, RideOffer, Request, FetchedRideRequest, PostRide
+)
 from .auth.auth_views import Signup, Login
 
 jwt = JWTManager()
@@ -30,6 +32,9 @@ def create_app(config_name):
     api_auth.add_resource(Login, '/login')
 
     api.add_resource(RideOffers, '/rides')
+    api.add_resource(PostRide, '/users/rides')
+    api.add_resource(FetchedRideRequest, '/users/rides/<rideId>/requests')
     api.add_resource(Request, '/rides/<int:rideId>/requests')
     api.add_resource(RideOffer, '/rides/<int:rideId>')
+
     return app
