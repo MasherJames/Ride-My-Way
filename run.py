@@ -1,5 +1,6 @@
 import os
 from app import create_app
+from app.models import Rides
 
 app = create_app(os.getenv('MODE') or 'default')
 
