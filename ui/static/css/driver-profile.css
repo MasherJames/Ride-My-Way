@@ -1,0 +1,76 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+
+/* navigation */
+
+.navigation {
+    background: linear-gradient(rgb(13, 0, 49), rgb(1, 22, 46));
+    display: flex;
+    flex-direction: column;
+}
+
+.copyright {
+    position: relative;
+    top: 48%;
+    padding: 1rem;
+}
+
+.nav__heading,
+.navs,
+.copyright {
+    color: white;
+    padding: 1rem;
+}
+
+.navs {
+    text-decoration: none;
+}
+
+.navs:hover {
+    background: gray;
+}
+
+
+/* form */
+
+.total__offers {
+    background: black;
+}
+
+.ride__offers {
+    text-align: center;
+    background: rgb(55, 0, 105);
+    padding: 0.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: white;
+    box-shadow: 3px 3px 3px rgb(134, 134, 134);
+}
+
+.list__containers {
+    margin: 3rem 0 0 15rem;
+    display: flex;
+    flex-direction: column;
+    width: 100vh;
+}
+
+.rows {
+    display: flex;
+    justify-content: center;
+    box-shadow: 2px 2px 2px 2px rgb(158, 158, 158);
+    color: black;
+}
+
+.flex__item {
+    margin: 1rem;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.description_header {
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid gray;
+}

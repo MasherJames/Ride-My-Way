@@ -33,17 +33,20 @@ class PostRide(Resource):
         driver_name = get_jwt_identity()
         user = UserRegister()
         current_user = user.get_user_by_username(driver_name)
+        
         if not current_user:
             return {}, 401
         _from = request_data['from']
         to = request_data['to']
         depature = request_data['depature']
 
-        ride_offer = Ride(current_user, _from, to, depature)
-        ride_offer.add_ride()
+        ride_offer = Rides(current_user, _from, to, depature)
+
+        store['ride_offers'].append(ride_offer)
+
         return {'message': 'ride offer created succesfully'}, 201
 
-
+ 
 class RideOffer(Resource):
     ''' getting a specific ride offer depending on the id passed '''
 
@@ -61,6 +64,7 @@ class RideOffer(Resource):
         ride_dl = ride.get_ride_by_id(rideId)
         ride_dl.delete_specific_ride(rideId)
 
+
         return {'message': 'ride offer deleted successfully'}, 200
 
 
@@ -69,7 +73,6 @@ class Request(Resource):
     '''Make a request to join aride'''
     @jwt_required
     def post(self, rideId):
-
         ride = Ride()
         ride_rq = ride.get_ride_by_id(rideId)
         passenger_name = get_jwt_identity()
@@ -99,7 +102,3 @@ class FetchedRideRequest(Resource):
         fetched_ride_requests = ride_rqst.get_all_ride_request()
 
         return fetched_ride_requests
-
-
-# PUT / users/rides/<rideId > /requests/<requestId >
-class
