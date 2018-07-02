@@ -4,6 +4,7 @@ from flask_jwt_extended import (
     get_jwt_identity, jwt_required
 )
 from ..models import Model, Ride, RideRequest, UserRegister
+from ..auth.auth_views import Validation
 
 
 class RideOffers(Resource):
@@ -40,6 +41,12 @@ class PostRide(Resource):
         to = request_data['to']
         depature = request_data['depature']
 
+        if not Validation().valid_str_fields(_from):
+            return {'message': 'Enter valid data'}, 400
+
+        if not Validation().valid_str_fields(to):
+            return {'message': 'Enter valid data'}, 400
+
         ride_offer = Ride(current_user, _from, to, depature)
         ride_offer.add()
         return {'message': 'ride offer created succesfully'}, 201
@@ -56,6 +63,7 @@ class RideOffer(Resource):
             return abort(404)
         return ride_offer.to_dict(), 200
 
+    ''' delete a specific ride offer '''
     @jwt_required
     def delete(self, rideId):
         ride = Ride()
@@ -66,18 +74,22 @@ class RideOffer(Resource):
 
 class Request(Resource):
 
-    '''Make a request to join a ride'''
+    '''Make a request to join a specific ride'''
     @jwt_required
     def post(self, rideId):
         ride = Ride()
-        ride_rq = ride.get(rideId)
+        ride_offer = ride.get(rideId)
         passenger_name = get_jwt_identity()
         user = UserRegister()
         current_user = user.get_by_username(passenger_name)
+
+        if not ride_offer:
+            return {'message': 'ride offer does not exist'}, 404
+
         if not current_user:
             return {'message': 'unauthorized'}, 401
 
-        ride_request = RideRequest(current_user, ride_rq)
+        ride_request = RideRequest(current_user, ride_offer)
         ride_request.add()
 
         return {'message': 'ride offer request created succesfully'}, 201
@@ -101,7 +113,7 @@ class AcceptedRideRequest(Resource):
     ''' accepted ride offer request '''
 
     @jwt_required
-    def put(self, requestId):
+    def put(self, rideId, requestId):
         ride_rqst = RideRequest()
         ride_rqst.accept(requestId)
 
@@ -112,7 +124,7 @@ class RejectedRideRequest(Resource):
     ''' rejected ride offer request '''
 
     @jwt_required
-    def put(self, requestId):
+    def put(self, rideId, requestId):
         ride_rqst = RideRequest()
         ride_rqst.reject(requestId)
 
