@@ -106,7 +106,7 @@ class Ride(Model):
 
 class RideRequest(Model):
 
-    def __init__(self, user=None, ride=None, status="pending"):
+    def __init__(self, user=None, ride=None, status='pending'):
         super().__init__(Model)
         self.user = user
         self.ride = ride
