@@ -12,24 +12,16 @@ from ..models import UserRegister
 class Validation:
 
     def valid_username(self, username):
-        if not re.match("^[a-zA-Z0-9]{6,}$", username):
-            return {'message': 'username should be atleast 6 alphanumerics long'}, 400
-        return None
+        return re.match("^[a-zA-Z0-9]{6,}$", username)
 
     def valid_password(self, password):
-        if not re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$", password):
-            return {'message': 'password should be atleast one uppercase, one lowercase, one digit and 6 alphanumerics long'}
-        return None
+        return re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$", password)
 
     def valid_email(self, email):
-        if not re.match("^[^@]+@[^@]+\.[^@]+$", email):
-            return {'message': 'please enter a valid email'}, 400
-        return None
+        return re.match("^[^@]+@[^@]+\.[^@]+$", email)
 
     def valid_str_fields(self, strings):
-        if not re.match("^[a-zA-Z0-9-\._@]+$", strings):
-            return {'message': 'This field should not be left blank'}, 400
-        return None
+        return re.match("^[a-zA-Z0-9-\._@]+$", strings)
 
 
 class Signup(Resource):
@@ -55,9 +47,14 @@ class Signup(Resource):
         validate = Validation()
         user_reg = UserRegister()
 
-        validate.valid_username(username)
-        validate.valid_email(email)
-        validate.valid_password(password)
+        if not validate.valid_username(request_data['username']):
+            return {'message': 'username should be atleast 6 character and valid'}, 400
+
+        if not validate.valid_email(request_data['email']):
+            return {'message': 'Enter a valid email'}, 400
+
+        if not validate.valid_password(request_data['password']):
+            return {'message': 'Password should be atleast 6 characters, a digit, an uppercase and a lowercase'}, 400
 
         if user_reg.get_by_username(username):
             return {'message': 'user with the username {} already exists'
