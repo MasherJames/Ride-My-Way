@@ -96,7 +96,6 @@ class TestRideOffers(unittest.TestCase):
         token = self.get_user_token()
 
         data = {
-            "driver_name": "joseph",
             "from": "Nakuru",
             "to": "ruiru",
             "depature": "20th octo 2018"
