@@ -1,6 +1,5 @@
 import os
 from app import create_app
-from app.models import Rides
 
 app = create_app(os.getenv('MODE') or 'default')
 
@@ -10,3 +9,21 @@ def test():
     import unittest
     t = unittest.TestLoader().discover('test')
     unittest.TextTestRunner(verbosity=3).run(t)
+
+
+@app.cli.command()
+def migrate():
+    from app.models import Model, Ride, RideRequest, UserRegister
+    Model().init_app(app)
+    UserRegister().create_table()
+    Ride().create_table()
+    RideRequest().create_table()
+
+
+@app.cli.command()
+def drop():
+    from app.models import Model, Ride, RideRequest, UserRegister
+    Model().init_app(app)
+    UserRegister().drop('users')
+    Ride().drop('rides')
+    RideRequest().drop('ride_requests')
