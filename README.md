@@ -45,7 +45,15 @@ git clone git@github.com:MasherJames/Ride-My-Way.git
 ## _Enviroment variables_
 
 - Secret key
+
+  ```
+  "SECRET KEY"
+  ```
+
 - Postgres database url
+  ```
+  "postgresql://owner:password@localhost/dbname"
+  ```
 
 **Testing**
 
