@@ -42,6 +42,11 @@ git clone git@github.com:MasherJames/Ride-My-Way.git
 - Flaskrestfull
 - Virtualenv
 
+## _Enviroment variables_
+
+- Secret key
+- Postgres database url
+
 **Testing**
 
 ```
