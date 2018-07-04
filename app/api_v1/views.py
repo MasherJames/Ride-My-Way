@@ -11,7 +11,7 @@ class RideOffers(Resource):
 
     @jwt_required
     def get(self):
-        ''' getting all the ride offers '''
+        ''' Getting all the ride offers '''
         ride = Ride()
         ride_offers = ride.get_all()
         return [ride_offer.to_dict() for ride_offer in ride_offers], 200
@@ -28,7 +28,7 @@ class PostRide(Resource):
 
     @jwt_required
     def post(self):
-        ''' creating a ride offer '''
+        ''' Creating a ride offer '''
 
         request_data = PostRide.parser.parse_args()
 
@@ -43,10 +43,14 @@ class PostRide(Resource):
         depature = request_data['depature']
 
         if not Validation().valid_str_fields(_from):
-            return {'message': 'data should be alphanumeric'}, 400
+            return {
+                'message': 'data should be text, numbers, _, and not empty'
+            }, 400
 
         if not Validation().valid_str_fields(to):
-            return {'message': 'data should be alphanumeric'}, 400
+            return {
+                'message': 'data should be text, numbers, _, and not empty'
+            }, 400
 
         ride_offer = Ride(current_user, _from, to, depature)
         ride_offer.add()
@@ -57,7 +61,7 @@ class RideOffer(Resource):
 
     @jwt_required
     def get(self, rideId):
-        ''' getting a specific ride offer depending on the id passed '''
+        ''' Getting a specific ride offer depending on the id passed '''
         ride = Ride()
         ride_offer = ride.get(rideId)
         if not ride_offer:
@@ -66,7 +70,7 @@ class RideOffer(Resource):
 
     @jwt_required
     def delete(self, rideId):
-        ''' delete a specific ride offer '''
+        ''' Delete a specific ride offer '''
         ride = Ride()
         ride.delete(rideId)
 
@@ -97,7 +101,7 @@ class Request(Resource):
 
     @jwt_required
     def get(self, rideId):
-        ''' fetch requests made for a specific ride '''
+        ''' Fetch requests made for a specific ride '''
 
         ride = Ride()
         ride_rq = ride.get(rideId)
@@ -115,7 +119,7 @@ class AcceptedRideRequest(Resource):
 
     @jwt_required
     def put(self, rideId, requestId):
-        ''' accepted ride offer request '''
+        ''' Accepted ride offer request '''
         ride_rqst = RideRequest()
         ride_rqst.accept(requestId)
 
@@ -126,7 +130,7 @@ class RejectedRideRequest(Resource):
 
     @jwt_required
     def put(self, rideId, requestId):
-        ''' rejected ride offer request '''
+        ''' Rejected ride offer request '''
         ride_rqst = RideRequest()
         ride_rqst.reject(requestId)
 
