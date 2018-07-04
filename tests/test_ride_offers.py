@@ -30,24 +30,25 @@ class TestRideOffers(unittest.TestCase):
         }
 
     def tearDown(self):
-        '''drop  the tables after test'''
+        '''Drop  the tables after test'''
         drop_tables()
 
     def signup(self):
-        '''sign up function'''
+        '''Sign up function'''
 
         response = self.client.post(
             "/api/v1/auth/signup",
             data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
+
         return response
 
     def login(self):
-        ''' login function '''
+        ''' Login function '''
         response = self.client.post(
             "/api/v1/auth/login",
-            data=json.dumps(self.data['login-cred']),
+            data=json.dumps(dict(self.data['login-cred'])),
             headers={'content-type': 'application/json'}
         )
 
@@ -70,7 +71,7 @@ class TestRideOffers(unittest.TestCase):
 
     def test_username_exists(self):
         '''
-        test username is already in use at the time of creating an accout
+        Test username is already in use at the time of creating an accout
         '''
         self.signup()
         response = self.signup()
@@ -79,7 +80,7 @@ class TestRideOffers(unittest.TestCase):
 
     def test_email_exists(self):
         '''
-        test email is already in use
+        Test email is already in use
         '''
         self.client.post(
             "/api/v1/auth/signup",
@@ -126,7 +127,7 @@ class TestRideOffers(unittest.TestCase):
 
     def get_user_token(self):
         '''
-        get token function
+        Get token function
         '''
 
         self.signup()
@@ -192,7 +193,7 @@ class TestRideOffers(unittest.TestCase):
 
     def test_user_can_request_a_ride(self):
         '''
-        test user can request to join a ride offer
+        Test user can request to join a ride offer
         '''
         token = self.get_user_token()
 
