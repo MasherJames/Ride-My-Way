@@ -8,10 +8,10 @@ from ..auth.auth_views import Validation
 
 
 class RideOffers(Resource):
-    ''' getting all the ride offers '''
 
     @jwt_required
     def get(self):
+        ''' getting all the ride offers '''
         ride = Ride()
         ride_offers = ride.get_all()
         return [ride_offer.to_dict() for ride_offer in ride_offers], 200
@@ -26,9 +26,10 @@ class PostRide(Resource):
     parser.add_argument('depature', type=str, required=True,
                         help='This field cannot be left blank')
 
-    ''' creating a ride offer '''
     @jwt_required
     def post(self):
+        ''' creating a ride offer '''
+
         request_data = PostRide.parser.parse_args()
 
         driver_name = get_jwt_identity()
@@ -42,10 +43,10 @@ class PostRide(Resource):
         depature = request_data['depature']
 
         if not Validation().valid_str_fields(_from):
-            return {'message': 'Enter valid data'}, 400
+            return {'message': 'data should be alphanumeric'}, 400
 
         if not Validation().valid_str_fields(to):
-            return {'message': 'Enter valid data'}, 400
+            return {'message': 'data should be alphanumeric'}, 400
 
         ride_offer = Ride(current_user, _from, to, depature)
         ride_offer.add()
@@ -53,19 +54,19 @@ class PostRide(Resource):
 
 
 class RideOffer(Resource):
-    ''' getting a specific ride offer depending on the id passed '''
 
     @jwt_required
     def get(self, rideId):
+        ''' getting a specific ride offer depending on the id passed '''
         ride = Ride()
         ride_offer = ride.get(rideId)
         if not ride_offer:
             return abort(404)
         return ride_offer.to_dict(), 200
 
-    ''' delete a specific ride offer '''
     @jwt_required
     def delete(self, rideId):
+        ''' delete a specific ride offer '''
         ride = Ride()
         ride.delete(rideId)
 
@@ -74,9 +75,9 @@ class RideOffer(Resource):
 
 class Request(Resource):
 
-    '''Make a request to join a specific ride'''
     @jwt_required
     def post(self, rideId):
+        '''Make a request to join a specific ride'''
         ride = Ride()
         ride_offer = ride.get(rideId)
         passenger_name = get_jwt_identity()
@@ -94,9 +95,10 @@ class Request(Resource):
 
         return {'message': 'ride offer request created succesfully'}, 201
 
-    ''' fetch requests made for a specific ride '''
     @jwt_required
     def get(self, rideId):
+        ''' fetch requests made for a specific ride '''
+
         ride = Ride()
         ride_rq = ride.get(rideId)
 
@@ -110,10 +112,10 @@ class Request(Resource):
 
 
 class AcceptedRideRequest(Resource):
-    ''' accepted ride offer request '''
 
     @jwt_required
     def put(self, rideId, requestId):
+        ''' accepted ride offer request '''
         ride_rqst = RideRequest()
         ride_rqst.accept(requestId)
 
@@ -121,10 +123,10 @@ class AcceptedRideRequest(Resource):
 
 
 class RejectedRideRequest(Resource):
-    ''' rejected ride offer request '''
 
     @jwt_required
     def put(self, rideId, requestId):
+        ''' rejected ride offer request '''
         ride_rqst = RideRequest()
         ride_rqst.reject(requestId)
 
