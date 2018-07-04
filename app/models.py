@@ -1,12 +1,15 @@
+import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import current_app
 import psycopg2
+from config import config
 
 
 class Model:
     def __init__(self, app=None):
         ''' create a connection to the db '''
-        self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
+        # self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
+        self.connect = psycopg2.connect(os.getenv('DATABASE_URL'))
         ''' creating a cursor'''
         self.cursor = self.connect.cursor()
 
@@ -29,6 +32,8 @@ class Model:
     def drop(self, name):
         self.cursor.execute(f"""DROP TABLE {name} CASCADE""")
         self.save()
+
+    ''' close connection to the database '''
 
     def close_session(self):
         self.cursor.close()
@@ -57,6 +62,13 @@ class Ride(Model):
          )"""
         self.execute_query(create_ride_table_query)
 
+    ''' drop rides table if it exists '''
+
+    def drop_table(self):
+        self.drop('rides')
+
+    ''' add ride into rides table '''
+
     def add(self):
         self.cursor.execute("""INSERT INTO rides
                      (driver_id, _from, _to, depature) VALUES(%s, %s, %s, %s)
@@ -64,6 +76,8 @@ class Ride(Model):
                               self._to, self.depature)
                             )
         self.save()
+
+    ''' get a ride by id '''
 
     def get(self, ride_id):
         self.cursor.execute(
@@ -74,6 +88,8 @@ class Ride(Model):
             return self.map_ride(ride)
         return None
 
+    ''' get all rides '''
+
     def get_all(self):
         self.cursor.execute("SELECT * FROM rides")
         rides = self._get_all()
@@ -82,10 +98,14 @@ class Ride(Model):
             return [self.map_ride(r) for r in rides]
         return None
 
+    ''' delete ride by id '''
+
     def delete(self, ride_id):
         self.cursor.execute(
             "DELETE FROM rides WHERE id=%s", (ride_id,))
         self.save()
+
+    ''' mapping a ride to a dictionary '''
 
     def to_dict(self):
         return dict(
@@ -95,6 +115,8 @@ class Ride(Model):
             _to=self._to,
             depature=self.depature
         )
+
+    ''' map ride to an object '''
 
     def map_ride(self, data):
         r = Ride(driver=UserRegister().get_by_id(
@@ -112,6 +134,8 @@ class RideRequest(Model):
         self.ride = ride
         self.status = status
 
+    ''' creating ride_request tables '''
+
     def create_table(self):
         create_request_table_query = """ CREATE TABLE IF NOT EXISTS ride_requests(
             id serial PRIMARY KEY,
@@ -123,12 +147,21 @@ class RideRequest(Model):
         )"""
         self.execute_query(create_request_table_query)
 
+    ''' drop table ride_requests if it exists '''
+
+    def drop_table(self):
+        self.drop('ride_requests')
+
+    ''' insert a ride request into ride_requests table '''
+
     def add(self):
         self.cursor.execute(""" INSERT INTO ride_requests (user_id, ride_id, status)
                             VALUES(%s, %s, %s)""",
                             (self.user.id, self.ride.id, self.status)
                             )
         self.save()
+
+    ''' get all ride requests '''
 
     def get_all(self):
         self.cursor.execute('SELECT * FROM ride_requests')
@@ -137,6 +170,8 @@ class RideRequest(Model):
         if ride_rqsts:
             return [self.map_request(ride_rqst) for ride_rqst in ride_rqsts]
         return None
+
+    ''' get ride request by id '''
 
     def get_by_id(self, requestId):
         self.cursor.execute(
@@ -148,6 +183,8 @@ class RideRequest(Model):
             return self.map_request(ride_request)
         return None
 
+    ''' update a request status to accepted '''
+
     def accept(self, requestId):
         self.cursor.execute(
             """
@@ -156,6 +193,8 @@ class RideRequest(Model):
             ('accepted', requestId)
         )
         self.save()
+
+    ''' update a request status to rejected '''
 
     def reject(self, requestId):
         self.cursor.execute(
@@ -166,6 +205,8 @@ class RideRequest(Model):
         )
         self.save()
 
+    ''' convert a ride request to a dictionary '''
+
     def to_dict(self):
         return dict(
             id=self.id,
@@ -173,6 +214,8 @@ class RideRequest(Model):
             email=self.ride,
             status=self.status
         )
+
+    ''' map a ride request to an object '''
 
     def map_request(self, data):
         self.id = data[0]
@@ -193,6 +236,8 @@ class UserRegister(Model):
             self.password_hash = generate_password_hash(password)
         self.permission = permission if permission else 2
 
+    ''' create a users table '''
+
     def create_table(self):
         create_user_query = """CREATE TABLE IF NOT EXISTS users(
              id serial PRIMARY KEY,
@@ -202,6 +247,13 @@ class UserRegister(Model):
              permission TEXT
         )"""
         self.execute_query(create_user_query)
+
+    ''' drop users table '''
+
+    def drop_table(self):
+        self.drop('users')
+
+    ''' add user into users table '''
 
     def add(self):
         self.cursor.execute(
@@ -214,6 +266,8 @@ class UserRegister(Model):
 
         self.save()
 
+    ''' get user by username '''
+
     def get_by_username(self, username):
         self.cursor.execute(
             'SELECT * FROM users WHERE username=%s', (username,)
@@ -223,6 +277,8 @@ class UserRegister(Model):
         if user:
             return self.map_user(user)
         return None
+
+    ''' get user by email '''
 
     def get_by_email(self, email):
         self.cursor.execute(
@@ -234,6 +290,8 @@ class UserRegister(Model):
             return self.map_user(user)
         return None
 
+    ''' get all users '''
+
     def get_all(self):
         self.cursor.execute(
             'SELECT * FROM users')
@@ -242,6 +300,8 @@ class UserRegister(Model):
         if users:
             return [self.map_user(user) for user in users]
         return None
+
+    ''' get user by id '''
 
     def get_by_id(self, user_id):
         self.cursor.execute(
@@ -253,6 +313,8 @@ class UserRegister(Model):
             return self.map_user(user)
         return None
 
+    ''' map a user to an object '''
+
     def map_user(self, data):
         self.id = data[0]
         self.username = data[1]
@@ -261,6 +323,8 @@ class UserRegister(Model):
         self.permission = data[4]
 
         return self
+
+    ''' coerce a user into a dictionary '''
 
     def to_dict(self):
         return dict(

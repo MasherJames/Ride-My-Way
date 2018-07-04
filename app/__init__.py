@@ -7,6 +7,7 @@ from .api_v1.views import (
     AcceptedRideRequest, RejectedRideRequest
 )
 from .auth.auth_views import Signup, Login
+from app.models import Model
 
 jwt = JWTManager()
 

@@ -13,6 +13,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    DATABASE_URL = os.getenv('DATABASE_TESTING_URL')
 
 
 class ProductionConfig(Config):
