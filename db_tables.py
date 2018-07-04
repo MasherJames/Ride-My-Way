@@ -2,6 +2,7 @@ from app.models import UserRegister, Ride, RideRequest
 
 
 def create_tables():
+    ''' creating all tables required for testing'''
     user = UserRegister()
     ride = Ride()
     ride_request = RideRequest()
@@ -12,6 +13,7 @@ def create_tables():
 
 
 def drop_tables():
+    ''' dropping all existing tables after testing'''
     user = UserRegister()
     ride = Ride()
     ride_request = RideRequest()
