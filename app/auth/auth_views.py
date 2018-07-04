@@ -12,7 +12,7 @@ from ..models import UserRegister
 class Validation:
 
     def valid_username(self, username):
-        ''' username should be alphanumeric with atleast 6 characters'''
+        ''' Username should be alphanumeric with atleast 6 characters'''
 
         return re.match("^[a-zA-Z0-9]{6,}$", username)
 
@@ -25,12 +25,12 @@ class Validation:
         )
 
     def valid_email(self, email):
-        ''' valid email should have an @ symbol and a . after the @ symbol'''
+        ''' Valid email should have an @ symbol and a . after the @ symbol'''
 
         return re.match("^[^@]+@[^@]+\.[^@]+$", email)
 
     def valid_str_fields(self, strings):
-        ''' all valid string fields should have alphanumeric characters '''
+        ''' All valid string fields should have alphanumeric characters '''
 
         return re.match("^[a-zA-Z0-9-\._@]+$", strings)
 
@@ -93,8 +93,7 @@ class Login(Resource):
                         help='This field cannot be left blank')
 
     def post(self):
-        ''' Login a user and he/she exists, give him/her an
-         authorization token '''
+        ''' Login a user it he exists and give him an access token '''
 
         request_data = Login.parser.parse_args()
 
