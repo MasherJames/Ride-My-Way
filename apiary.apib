@@ -1,0 +1,95 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Ride-My-way
+
+Ride my way is a carpooling application where a user can register as a driver 
+or a passenger. 
+A driver can create a ride offer while a passenger can view all ride offers created
+and he/she can request to join a specific ride offer.
+A driver can accept or reject the ride request from a passenger.
+A passenger gets notified if his/her ride request was accepted.
+
+## UserSignUp Collection [/api/v1/auth/signup]
+
+### UserSignUp [POST]
+A user can create an Account
++ Request (application/json)
+
++ Response 201 (application/json)
+
+        {"message": "user created successfully"}
+
+
+## UserLogin Collection [/api/v1/auth/login]
+
+### UserLogin [POST]
+A user with an account can Login
++ Request (application/json)
+
++ Response 200 (application/json)
+
+        
+        {"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MzA4MjcyMjUsIm5iZiI6MTUzMDgyNzIyNSwianRpIjoiZWMyMjU0ODgtNmMzZi00ZGQxLTk1MTktOWY5OTg5NjkyNzk2IiwiZXhwIjoxNTMwODI4MTI1LCJpZGVudGl0eSI6Imtra2tra2tra2tra2tra2trIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.DIYMUAdSOrfYgwERHjeFNhdrwz90pylLGBhtSJi7wuM"}
+
+
+## Rides Collection [/api/v1/rides]
+### List all rides [GET]
+
+Get all ride offers created
++ Request (application/json)
+
++ Response 200 (application/json)
+
+
+### Create a ride offer [POST]
+A user as a driver with an account and logged in can create a ride offer
++ Request (application/json)
+
++ Response 201 (application/json)
+
+            {'message': 'ride offer created succesfully'}
+
+## Ride Requests Collection [/api/v1/rides/{rideId}/requests]
+### Make a ride request [POST]
+
+Make a request to join a ride
++ Parameter 
+    + rideId (number) - A ride offer id
+
++ Response 201 (application/json)
+
+            {'message': 'ride offer request created succesfully'}
+            
+### Fetch all ride requests [GET]
+
+A driver can fetch all ride request for the ride offer he created
++ Parameter
+    + rideId (number) - A ride offer id
+    
++ Response 200 (application/json)
+
+## Ride Collection [/api/v1//rides/{rideId}]
+### Fetch a ride [GET]
+
+Fetch the details of a single ride
++ Parameter 
+    + rideId (number) - A ride offer id
+    
++ Response 200 (application/json)
+
+## Ride request response collection [/rides/{rideId}/requests/{requestId}]
+### Accept or reject ride request [PUT]
+
+A driver can accept a ride request 
++ Parameters
+    + rideId (number) - A ride offer id
+    + requestId (number) - A ride request id
+    
++ Response 200 (application/json)
+            
+            {'message': 'request accepted'}
+            
++ Response 200 (application/json)
+            
+            {'message': 'request rejected'}
