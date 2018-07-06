@@ -83,6 +83,8 @@ flask run
 | DELETE | /api/v1/rides/{rideId}                      | delete a specific ride offer                   |
 | PUT    | /rides/{rideId}/requests/{requestId}/accept | accept a ride request                          |
 | PUT    | /rides/{rideId}/requests/{requestId}/reject | reject a ride request                          |
+| DELETE | /rides/{int:rideId}/requests/{requestId}    | delete a ride request                          |
+| GET    | /rides/{int:rideId}/requests                | get the requests from a specific ride          |
 
 ### Languages and tools used
 
