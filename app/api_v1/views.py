@@ -3,7 +3,7 @@ from flask_jwt_extended import (
     create_access_token,
     get_jwt_identity, jwt_required
 )
-from ..models import Model, Ride, RideRequest, UserRegister
+from ..models import Ride, RideRequest, UserRegister
 from ..auth.auth_views import Validation
 
 
@@ -110,7 +110,7 @@ class Request(Resource):
             return {'message': 'ride request does not exist'}, 404
 
         ride_rqst = RideRequest()
-        ride_requests = ride_rqst.get_all()
+        ride_requests = ride_rqst.get_all(rideId)
 
         return [ride_request.to_dict() for ride_request in ride_requests], 200
 
@@ -135,3 +135,14 @@ class RejectedRideRequest(Resource):
         ride_rqst.reject(requestId)
 
         return {'message': 'request rejected'}, 200
+
+
+class DeleteRequest(Resource):
+
+    @jwt_required
+    def delete(self, requestId):
+        ''' Delete specific ride request '''
+        ride_rqs = RideRequest()
+        ride_rqs.delete(requestId)
+
+        return {'message': 'ride request deleted successfully'}, 200

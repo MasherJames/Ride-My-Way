@@ -20,18 +20,14 @@ class TestRideOffers(unittest.TestCase):
             "signup-cred": {
                 "username": "macharia",
                 "email": "jamesmash@gmail.com",
-                "password": "qwerty",
+                "password": "Qwerty123",
                 "permission": "1"
             },
             "login-cred": {
                 "username": "macharia",
-                "password": "qwerty"
+                "password": "Qwerty123"
             }
         }
-
-    def tearDown(self):
-        '''Drop  the tables after test'''
-        drop_tables()
 
     def signup(self):
         '''Sign up function'''
@@ -48,7 +44,7 @@ class TestRideOffers(unittest.TestCase):
         ''' Login function '''
         response = self.client.post(
             "/api/v1/auth/login",
-            data=json.dumps(dict(self.data['login-cred'])),
+            data=json.dumps(self.data['login-cred']),
             headers={'content-type': 'application/json'}
         )
 
@@ -66,7 +62,6 @@ class TestRideOffers(unittest.TestCase):
         '''
         self.signup()
         response = self.login()
-
         self.assertEqual(response.status_code, 200)
 
     def test_username_exists(self):
@@ -82,13 +77,13 @@ class TestRideOffers(unittest.TestCase):
         '''
         Test email is already in use
         '''
-        self.client.post(
+        response = self.client.post(
             "/api/v1/auth/signup",
             data=json.dumps(dict(
-                username="james",
+                username="dannydan",
                 email="james@gmail.com",
-                password="qwerty",
-                permissions="1"
+                password="Passwrd123",
+                permission="1"
             )),
             headers={'content-type': 'application/json'}
         )
@@ -96,14 +91,13 @@ class TestRideOffers(unittest.TestCase):
         response = self.client.post(
             "/api/v1/auth/signup",
             data=json.dumps(dict(
-                username="mash",
+                username="kimkush",
                 email="james@gmail.com",
-                password="qwerty",
-                permissions="1"
+                password="Kimkush123",
+                permission="1"
             )),
             headers={'content-type': 'application/json'}
         )
-
         self.assertEqual(response.status_code, 400)
 
     def test_invalid_credentials(self):
@@ -122,7 +116,6 @@ class TestRideOffers(unittest.TestCase):
             data=json.dumps(data),
             headers={'content-type': 'application/json'}
         )
-
         self.assertEqual(response.status_code, 400)
 
     def get_user_token(self):
@@ -181,7 +174,7 @@ class TestRideOffers(unittest.TestCase):
         data = {
             "from": "Nakuru",
             "to": "ruiru",
-            "depature": "20th octo 2018"
+            "depature": "20thAugust2018"
         }
         response = self.client.post(
             "/api/v1/users/rides", data=json.dumps(data),
@@ -206,3 +199,8 @@ class TestRideOffers(unittest.TestCase):
                      'Authorization': 'Bearer {}'.format(token)}
         )
         self.assertEqual(response.status_code, 201)
+
+    def tearDown(self):
+        '''Drop  the tables after test'''
+        drop_tables()
+        self.app_context.pop()

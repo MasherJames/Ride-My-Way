@@ -5,10 +5,9 @@ import psycopg2
 
 
 class Model:
-    def __init__(self, app=None):
+    def __init__(self):
         ''' Create a connection to the db '''
-        # self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
-        self.connect = psycopg2.connect(os.getenv('DATABASE_URL'))
+        self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
         ''' Creating a cursor'''
         self.cursor = self.connect.cursor()
 
@@ -67,6 +66,7 @@ class Ride(Model):
     def drop_table(self):
         ''' Drop rides table if it exists '''
         self.drop('rides')
+        self.close_session()
 
     def add(self):
         ''' Add ride into rides table '''
@@ -124,7 +124,7 @@ class Ride(Model):
 class RideRequest(Model):
 
     def __init__(self, user=None, ride=None, status='pending'):
-        super().__init__(Model)
+        super().__init__()
         self.user = user
         self.ride = ride
         self.status = status
@@ -144,6 +144,7 @@ class RideRequest(Model):
     def drop_table(self):
         ''' Drop table ride_requests if it exists '''
         self.drop('ride_requests')
+        self.close_session()
 
     def add(self):
         ''' Insert a ride request into ride_requests table '''
@@ -153,9 +154,10 @@ class RideRequest(Model):
                             )
         self.save()
 
-    def get_all(self):
+    def get_all(self, ride_Id):
         ''' Get all ride requests '''
-        self.cursor.execute('SELECT * FROM ride_requests')
+        self.cursor.execute(
+            'SELECT * FROM ride_requests WHERE ride_id=%s', (ride_Id,))
         ride_rqsts = self._get_all()
 
         if ride_rqsts:
@@ -172,6 +174,12 @@ class RideRequest(Model):
         if ride_request:
             return self.map_request(ride_request)
         return None
+
+    def delete(self, requestId):
+        ''' Delete ride request by id '''
+        self.cursor.execute(
+            "DELETE FROM ride_requests WHERE id=%s", (requestId,))
+        self.save()
 
     def accept(self, requestId):
         ''' Update a request status to accepted '''
@@ -236,6 +244,7 @@ class UserRegister(Model):
     def drop_table(self):
         ''' Drop users table '''
         self.drop('users')
+        self.close_session()
 
     def add(self):
         ''' Add user into users table '''
