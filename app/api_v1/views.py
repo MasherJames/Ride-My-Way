@@ -140,9 +140,9 @@ class RejectedRideRequest(Resource):
 class DeleteRequest(Resource):
 
     @jwt_required
-    def delete(self, requestId):
+    def delete(self, rideId, requestId):
         ''' Delete specific ride request '''
         ride_rqs = RideRequest()
-        ride_rqs.delete(requestId)
+        ride_rqs.delete_req(requestId)
 
         return {'message': 'ride request deleted successfully'}, 200

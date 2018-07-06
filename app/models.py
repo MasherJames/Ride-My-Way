@@ -155,7 +155,7 @@ class RideRequest(Model):
         self.save()
 
     def get_all(self, ride_Id):
-        ''' Get all ride requests '''
+        ''' Get all ride requests in a specific ride'''
         self.cursor.execute(
             'SELECT * FROM ride_requests WHERE ride_id=%s', (ride_Id,))
         ride_rqsts = self._get_all()
@@ -175,7 +175,7 @@ class RideRequest(Model):
             return self.map_request(ride_request)
         return None
 
-    def delete(self, requestId):
+    def delete_req(self, requestId):
         ''' Delete ride request by id '''
         self.cursor.execute(
             "DELETE FROM ride_requests WHERE id=%s", (requestId,))
