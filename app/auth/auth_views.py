@@ -11,35 +11,27 @@ from ..models import UserRegister
 
 class Validation:
 
-    '''
-    username should be alphanumeric with atleast 6 characters
-    '''
-
     def valid_username(self, username):
+        ''' Username should be alphanumeric with atleast 6 characters'''
+
         return re.match("^[a-zA-Z0-9]{6,}$", username)
 
-    '''
-    A valid password has atleast one uppercase, one lowercase
-    one digit and 6 characters long
-    '''
-
     def valid_password(self, password):
+        ''' A valid password has atleast one uppercase, one lowercase
+    one digit and 6 characters long'''
+
         return re.match(
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$", password
         )
 
-    '''
-    valid email should have an @ symbol and a . after the @ symbol
-    '''
-
     def valid_email(self, email):
+        ''' Valid email should have an @ symbol and a . after the @ symbol'''
+
         return re.match("^[^@]+@[^@]+\.[^@]+$", email)
 
-    '''
-    all valid string fields should have alphanumeric characters
-    '''
-
     def valid_str_fields(self, strings):
+        ''' All valid string fields should have alphanumeric characters '''
+
         return re.match("^[a-zA-Z0-9-\._@]+$", strings)
 
 
@@ -99,11 +91,10 @@ class Login(Resource):
                         help='This field cannot be left blank')
     parser.add_argument('password', required=True,
                         help='This field cannot be left blank')
-    '''
-    Login a user and he/she exists, give him/her an authorization token
-    '''
 
     def post(self):
+        ''' Login a user it he exists and give him an access token '''
+
         request_data = Login.parser.parse_args()
 
         username = request_data['username']

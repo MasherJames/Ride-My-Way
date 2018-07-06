@@ -5,12 +5,12 @@ from db_tables import create_tables, drop_tables
 
 
 class TestRideOffers(unittest.TestCase):
-    '''
-    Setup the app to testing mode
-    creating a test client for testing
-    '''
 
     def setUp(self):
+        '''
+        Setup the app to testing mode
+        creating a test client for testing
+        '''
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -29,73 +29,59 @@ class TestRideOffers(unittest.TestCase):
             }
         }
 
-    '''
-    drop  the tables after test
-    '''
-
     def tearDown(self):
+        '''Drop  the tables after test'''
         drop_tables()
 
-    '''
-    sign up function
-    '''
-
     def signup(self):
+        '''Sign up function'''
+
         response = self.client.post(
             "/api/v1/auth/signup",
             data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
+
         return response
 
-    '''
-    login function
-    '''
-
     def login(self):
+        ''' Login function '''
         response = self.client.post(
             "/api/v1/auth/login",
-            data=json.dumps(self.data['login-cred']),
+            data=json.dumps(dict(self.data['login-cred'])),
             headers={'content-type': 'application/json'}
         )
 
         return response
 
-    '''
-    Test if a user can successfully signup
-    '''
-
     def test_signup(self):
+        '''Test if a user can signup'''
         response = self.signup()
 
         self.assertEqual(response.status_code, 201)
 
-    '''
-    Test a user can successfully login after creating an account
-    '''
-
     def test_login(self):
-        ''' signup a user first '''
+        '''
+        Test a user can successfully login after creating an account
+        '''
         self.signup()
         response = self.login()
 
         self.assertEqual(response.status_code, 200)
 
-    '''
-    test username is already in use at the time of creating an accout
-    '''
-
     def test_username_exists(self):
+        '''
+        Test username is already in use at the time of creating an accout
+        '''
         self.signup()
         response = self.signup()
 
         self.assertEqual(response.status_code, 400)
 
-    '''
-    test email is already in use
-    '''
-
     def test_email_exists(self):
+        '''
+        Test email is already in use
+        '''
         self.client.post(
             "/api/v1/auth/signup",
             data=json.dumps(dict(
@@ -120,11 +106,11 @@ class TestRideOffers(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    '''
-    Test invalid input data during signup
-    '''
-
     def test_invalid_credentials(self):
+        '''
+        Test invalid input data during signup
+        '''
+
         data = {
             'username': ' ',
             'email': 'kim.kim',
@@ -139,33 +125,31 @@ class TestRideOffers(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    '''
-    get token function
-    '''
-
     def get_user_token(self):
+        '''
+        Get token function
+        '''
+
         self.signup()
         response = self.login()
         token = json.loads(response.data).get('token', None)
 
         return token
 
-    '''
-    Test a user gets a token after login
-    '''
-
     def test_user_get_token(self):
+        '''
+        Test a user gets a token after login
+        '''
         self.signup()
         response = self.login()
         self.assertEqual(response.status_code, 200)
 
         self.assertIn('token', json.loads(response.data))
 
-    '''
-    Test a logged in user can view all ride offers
-    '''
-
     def test_user_can_view_all_ride_offers(self):
+        '''
+        Test a logged in user can view all ride offers
+        '''
         token = self.get_user_token()
 
         response = self.client.get(
@@ -175,11 +159,10 @@ class TestRideOffers(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    '''
-    Test a user can view the details of a specific ride when logged in
-    '''
-
     def test_user_can_view_a_specific_ride_offer(self):
+        '''
+        Test a user can view the details of a specific ride when logged in
+        '''
         token = self.get_user_token()
 
         response = self.client.get(
@@ -189,11 +172,10 @@ class TestRideOffers(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    '''
-    Test a logged in user can create a ride offer
-    '''
-
     def test_user_can_create_ride_offer(self):
+        '''
+        Test a logged in user can create a ride offer
+        '''
         token = self.get_user_token()
 
         data = {
@@ -209,11 +191,10 @@ class TestRideOffers(unittest.TestCase):
 
         self.assertEqual(response.status_code, 201)
 
-    '''
-    test user can request to join a ride offer
-    '''
-
     def test_user_can_request_a_ride(self):
+        '''
+        Test user can request to join a ride offer
+        '''
         token = self.get_user_token()
 
         data = {

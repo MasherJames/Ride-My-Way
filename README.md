@@ -42,6 +42,19 @@ git clone git@github.com:MasherJames/Ride-My-Way.git
 - Flaskrestfull
 - Virtualenv
 
+## _Enviroment variables_
+
+- Secret key
+
+  ```
+  "SECRET KEY"
+  ```
+
+- Postgres database url
+  ```
+  "postgresql://owner:password@localhost/dbname"
+  ```
+
 **Testing**
 
 ```
@@ -59,15 +72,17 @@ flask run
 
 ## Endpoints to test
 
-| Method | Endpoint                        | Description                                    |
-| ------ | ------------------------------- | ---------------------------------------------- |
-| POST   | /api/v1/auth/signup             | sign up a user                                 |
-| POST   | /api/v1/auth/login              | login a user                                   |
-| POST   | /api/v1/rides                   | post a ride offer                              |
-| GET    | /api/v1/rides                   | get all ride offers                            |
-| GET    | /api/v1/rides/<rideId>          | get a specific ride offer depending on it's id |
-| POST   | /api/v1/rides/<rideId>/requests | request to join a specific ride offer          |
-| DELETE | /api/v1/rides/<rideId>          | delete a specific ride offer                   |
+| Method | Endpoint                                    | Description                                    |
+| ------ | ------------------------------------------- | ---------------------------------------------- |
+| POST   | /api/v1/auth/signup                         | sign up a user                                 |
+| POST   | /api/v1/auth/login                          | login a user                                   |
+| POST   | /api/v1/rides                               | post a ride offer                              |
+| GET    | /api/v1/rides                               | get all ride offers                            |
+| GET    | /api/v1/rides/<rideId>                      | get a specific ride offer depending on it's id |
+| POST   | /api/v1/rides/<rideId>/requests             | request to join a specific ride offer          |
+| DELETE | /api/v1/rides/<rideId>                      | delete a specific ride offer                   |
+| PUT    | /rides/<rideId>/requests/<requestId>/accept | accept a ride request                          |
+| PUT    | /rides/<rideId>/requests/<requestId>/reject | reject a ride request                          |
 
 ### Languages and tools used
 
