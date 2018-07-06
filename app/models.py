@@ -5,10 +5,9 @@ import psycopg2
 
 
 class Model:
-    def __init__(self, app=None):
+    def __init__(self):
         ''' Create a connection to the db '''
-        # self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
-        self.connect = psycopg2.connect(os.getenv('DATABASE_URL'))
+        self.connect = psycopg2.connect(current_app.config.get('DATABASE_URL'))
         ''' Creating a cursor'''
         self.cursor = self.connect.cursor()
 
@@ -153,9 +152,10 @@ class RideRequest(Model):
                             )
         self.save()
 
-    def get_all(self):
+    def get_all(self, ride_Id):
         ''' Get all ride requests '''
-        self.cursor.execute('SELECT * FROM ride_requests')
+        self.cursor.execute(
+            'SELECT * FROM ride_requests WHERE ride_id=%s', (ride_Id,))
         ride_rqsts = self._get_all()
 
         if ride_rqsts:
