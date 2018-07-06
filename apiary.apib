@@ -93,3 +93,24 @@ A driver can accept a ride request
 + Response 200 (application/json)
             
             {'message': 'request rejected'}
+            
+# Data Structures 
+## User (object)
+    - id: 1 (number) - User id
+    - username: myname (string) - User's username
+    - email: email@gmail.com (string) - User's email
+    - password: secretpass (string) - User's password
+    - permission: 2 (number) - User's permission
+    
+## Ride (object)
+    - id: 1 (number) - Ride id
+    - driver: driver (object) - A driver offering a ride
+    - from: Kisumu (string) - Take off place
+    - to: Nakuru (string) - Destination
+    - depature: Monday 20th (string) - Date of the ride
+
+## Ride Request (object)
+    - id: 1 (number) - ride request id
+    - user: user (object) - user requesting for the ride
+    - ride: ride (object) - ride being requested
+    - status: pending (string) - request status
