@@ -10,10 +10,6 @@ class BasicTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
-    def tearDown(self):
-        ''' Destroy app context after testing is done '''
-        self.app_context.pop()
-
     def test_app_exists(self):
         ''' Testing for the presence of the app context '''
         self.assertFalse(current_app is None)
@@ -21,3 +17,7 @@ class BasicTestCase(unittest.TestCase):
     def test_app_is_testing(self):
         ''' Testing if the config mode is testing '''
         self.assertTrue(current_app.config['TESTING'])
+
+    def tearDown(self):
+        ''' Destroy app context after testing is done '''
+        self.app_context.pop()
