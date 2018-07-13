@@ -1,0 +1,60 @@
+.signup_section {
+    background: linear-gradient(rgba(201, 200, 200, 0.3), rgb(0, 0, 0)), url(backgroundImg/signup.jpg);
+    height: 100vh;
+}
+
+.sign_up_heading {
+    text-align: center;
+    color: white;
+    padding: 1rem;
+}
+
+.signup__form {
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    color: white;
+    border: 2px solid rgb(22, 1, 161);
+    border-radius: 12px;
+    padding: 1rem;
+    width: 40%;
+}
+
+input {
+    border: 1px solid rgb(173, 173, 173);
+    border-radius: 8px;
+    font: inherit;
+}
+
+label,
+#fullname,
+#email,
+#password,
+#repeatpassword {
+    width: 90%;
+    display: block;
+    padding: 0.5rem;
+    margin: 0.4rem;
+}
+
+input[type="button"],
+#fullname:focus,
+#email:focus,
+#password:focus,
+#repeatpassword:focus {
+    outline: none;
+}
+
+input[type="button"] {
+    margin: 0.6rem;
+    padding: 0.5rem;
+}
+
+input[type="button"]:hover {
+    background: gray;
+}
+
+.signup__form p a {
+    text-decoration: none;
+    color: purple;
+}
