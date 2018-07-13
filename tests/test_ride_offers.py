@@ -12,10 +12,10 @@ class TestRideOffers(unittest.TestCase):
         creating a test client for testing
         '''
         self.app = create_app('testing')
+        self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
         create_tables()
-        self.client = self.app.test_client()
         self.data = {
             "signup-cred": {
                 "username": "macharia",
@@ -28,6 +28,11 @@ class TestRideOffers(unittest.TestCase):
                 "password": "Qwerty123"
             }
         }
+
+    def tearDown(self):
+        '''Drop  the tables after test'''
+        self.app_context.pop()
+        drop_tables()
 
     def signup(self):
         '''Sign up function'''
@@ -199,8 +204,3 @@ class TestRideOffers(unittest.TestCase):
                      'Authorization': 'Bearer {}'.format(token)}
         )
         self.assertEqual(response.status_code, 201)
-
-    def tearDown(self):
-        '''Drop  the tables after test'''
-        drop_tables()
-        self.app_context.pop()

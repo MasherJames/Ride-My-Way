@@ -1,6 +1,6 @@
 import os
 from app import create_app
-from app.models import Model
+from app.models import Model, UserRegister, Ride, RideRequest
 
 app = create_app(os.getenv('MODE') or 'default')
 
@@ -14,7 +14,6 @@ def test():
 
 @app.cli.command()
 def migrate():
-    from app.models import Ride, RideRequest, UserRegister
     Model().init_app(app)
     UserRegister().create_table()
     Ride().create_table()
@@ -23,7 +22,6 @@ def migrate():
 
 @app.cli.command()
 def drop():
-    from app.models import Ride, RideRequest, UserRegister
     Model().init_app(app)
     UserRegister().drop_table()
     Ride().drop_table()
