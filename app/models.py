@@ -32,7 +32,7 @@ class Model:
 
     def drop(self, name):
         ''' Drop tables method'''
-        self.cursor.execute(f"""DROP TABLE {name} CASCADE""")
+        self.cursor.execute(f"""DROP TABLE IF EXISTS {name} CASCADE""")
         self.save()
 
     def close_session(self):
