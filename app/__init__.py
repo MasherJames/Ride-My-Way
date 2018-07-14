@@ -4,10 +4,9 @@ from flask_jwt_extended import JWTManager
 from config import config
 from .api_v1.views import (
     RideOffers, RideOffer, Request, PostRide,
-    AcceptedRideRequest, RejectedRideRequest
+    AcceptedRideRequest, RejectedRideRequest, DeleteRequest
 )
 from .auth.auth_views import Signup, Login
-from app.models import Model
 
 jwt = JWTManager()
 
@@ -37,6 +36,7 @@ def create_app(config_name):
     api.add_resource(PostRide, '/users/rides')
     api.add_resource(Request, '/rides/<int:rideId>/requests')
     api.add_resource(RideOffer, '/rides/<int:rideId>')
+    api.add_resource(DeleteRequest, '/rides/<int:rideId>/requests/<requestId>')
     api.add_resource(AcceptedRideRequest,
                      '/users/rides/<rideId>/requests/<requestId>/accept')
     api.add_resource(RejectedRideRequest,
