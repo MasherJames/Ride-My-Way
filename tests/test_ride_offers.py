@@ -18,8 +18,8 @@ class TestRideOffers(unittest.TestCase):
         create_tables()
         self.data = {
             "signup-cred": {
-                "username": "macharia",
-                "email": "jamesmash@gmail.com",
+                "username": "Kaaalllll",
+                "email": "Kaaalllll@gmail.com",
                 "password": "Qwerty123",
                 "permission": "1"
             },
@@ -42,7 +42,6 @@ class TestRideOffers(unittest.TestCase):
             data=json.dumps(self.data['signup-cred']),
             headers={'content-type': 'application/json'}
         )
-
         return response
 
     def login(self):
@@ -54,12 +53,6 @@ class TestRideOffers(unittest.TestCase):
         )
 
         return response
-
-    def test_signup(self):
-        '''Test if a user can signup'''
-        response = self.signup()
-
-        self.assertEqual(response.status_code, 201)
 
     def test_login(self):
         '''
