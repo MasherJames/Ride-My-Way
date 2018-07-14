@@ -65,10 +65,10 @@ class TestRideOffers(unittest.TestCase):
     Test if a user can successfully signup
     '''
 
-    def test_signup(self):
-        response = self.signup()
+    # def test_signup(self):
+    #     response = self.signup()
 
-        self.assertEqual(response.status_code, 201)
+    #     self.assertEqual(response.status_code, 201)
 
     '''
     Test a user can successfully login after creating an account

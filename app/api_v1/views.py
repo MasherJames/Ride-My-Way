@@ -1,8 +1,6 @@
 from flask_restful import Resource, reqparse, abort
-from flask_jwt_extended import (
-    create_access_token,
-    get_jwt_identity, jwt_required
-)
+from flask_jwt_extended import get_jwt_identity, jwt_required
+
 from ..models import Model, Ride, RideRequest, UserRegister
 from ..auth.auth_views import Validation
 

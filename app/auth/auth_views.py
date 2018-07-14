@@ -1,10 +1,9 @@
+import datetime
 from flask import request
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import (
-    create_access_token,
-    get_jwt_identity, jwt_required
-)
+from flask_jwt_extended import create_access_token
+
 
 from ..models import UserRegister
 
@@ -112,6 +111,7 @@ class Login(Resource):
         user = user_reg.get_by_username(username)
 
         if user:
-            token = create_access_token(user.username)
-            return {'token': token}, 200
+            expires = datetime.timedelta(minutes=30)
+            token = create_access_token(user.username, expires_delta=expires)
+            return {'token': token, 'message': 'successfully logged in'}, 200
         return {'message': 'user not found'}, 404
