@@ -104,5 +104,6 @@ class Login(Resource):
 
         if user:
             token = create_access_token(user.username)
-            return {'token': token}, 200
+            return {'token': token,
+                    'message': 'successfully logged in'}, 200
         return {'message': 'user not found'}, 404
