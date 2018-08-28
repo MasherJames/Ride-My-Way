@@ -1,15 +1,29 @@
-import datetime
-from flask import request
 import re
+import datetime
+from functools import wraps
+from flask import request
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt_identity
 
 
 from ..models import UserRegister
 
 
-class Validation:
+def access_permission(access_id):
+    ''' Restrict access levels depending on the permission '''
+    def decorator_function(f):
+        @wraps(f)
+        def wrapper_function(*args, **kwargs):
+            user = UserRegister().get_by_username(get_jwt_identity())
+            if not user.role_level(access_id):
+                return {'message': 'Your cannot access this level'}, 401
+            return f(*args, **kwargs)
+        return wrapper_function
 
+    return decorator_function
+
+
+class Validation:
     def valid_username(self, username):
         ''' Username should be alphanumeric with atleast 6 characters'''
 
@@ -57,18 +71,18 @@ class Signup(Resource):
         validate = Validation()
         user_reg = UserRegister()
 
-        if not validate.valid_username(request_data['username']):
+        if not validate.valid_username(username):
             return {
-                'message': 'username should be atleast 6 character and valid'
+                'message': 'username should be atleast 6 alphanumeric characters'
             }, 400
 
-        if not validate.valid_email(request_data['email']):
+        if not validate.valid_email(email):
             return {'message': 'Enter a valid email'}, 400
 
-        if not validate.valid_password(request_data['password']):
+        if not validate.valid_password(password):
             return {
                 'message':
-                'Password should be atleast 6 characters, a digit, an uppercase and a lowercase'
+                'Password should be atleast 6 characters, a digit,an uppercase and a lowercase'
             }, 400
 
         if user_reg.get_by_username(username):
@@ -104,5 +118,5 @@ class Login(Resource):
         if user:
             expires = datetime.timedelta(minutes=30)
             token = create_access_token(user.username, expires_delta=expires)
-            return {'token': token, 'message': 'successfully logged in'}, 200
+            return {'token': token, 'message': f'You were successfully logged in {username}'}, 200
         return {'message': 'user not found'}, 404

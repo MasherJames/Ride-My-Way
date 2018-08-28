@@ -1,7 +1,7 @@
-from app import create_app
+from ..app import create_app
 import unittest
 import json
-from db_tables import create_tables, drop_tables
+from ..db_tables import create_tables, drop_tables
 
 
 class TestRideOffers(unittest.TestCase):
@@ -18,21 +18,21 @@ class TestRideOffers(unittest.TestCase):
         create_tables()
         self.data = {
             "signup-cred": {
-                "username": "Kaaalllll",
-                "email": "Kaaalllll@gmail.com",
+                "username": "Macharia",
+                "email": "mash@gmail.com",
                 "password": "Qwerty123",
                 "permission": "1"
             },
             "login-cred": {
-                "username": "macharia",
+                "username": "Macharia",
                 "password": "Qwerty123"
             }
         }
 
     def tearDown(self):
         '''Drop  the tables after test'''
-        self.app_context.pop()
         drop_tables()
+        self.app_context.pop()
 
     def signup(self):
         '''Sign up function'''
