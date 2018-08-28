@@ -135,7 +135,7 @@ class RideRequest(Model):
             id serial PRIMARY KEY,
             user_id INTEGER NOT NULL,
             ride_id INTEGER NOT NULL,
-            status VARCHAR Not Null,
+            status VARCHAR NOT Null,
             FOREIGN KEY(user_id) REFERENCES users(id),
             FOREIGN KEY(ride_id) REFERENCES rides(id)
         )"""
@@ -161,7 +161,16 @@ class RideRequest(Model):
         ride_rqsts = self._get_all()
 
         if ride_rqsts:
-            return [self.map_request(ride_rqst) for ride_rqst in ride_rqsts]
+            requests = []
+            for ride_rqst in ride_rqsts:
+                r_q = {
+                    'id': ride_rqst[0],
+                    'user': UserRegister().get_by_id(ride_rqst[1]).to_dict(),
+                    'ride': ride_rqst[2],
+                    'status': ride_rqst[3]
+                }
+                requests.append(r_q)
+            return requests
         return None
 
     def get_by_id(self, requestId):
@@ -205,13 +214,14 @@ class RideRequest(Model):
         ''' Convert a ride request to a dictionary '''
         return dict(
             id=self.id,
-            username=self.user,
-            email=self.ride,
+            user_id=self.user,
+            ride_id=self.ride,
             status=self.status
         )
 
     def map_request(self, data):
         ''' Map a ride request to an object '''
+
         self.id = data[0]
         self.user = data[1]
         self.ride = data[2]
@@ -228,7 +238,11 @@ class UserRegister(Model):
         self.email = email
         if password:
             self.password_hash = generate_password_hash(password)
-        self.permission = permission if permission else 2
+        self.permission = permission
+
+    def role_level(self, permission):
+        ''' check type of the user by permission value '''
+        return self.permission == permission
 
     def create_table(self):
         ''' Create a users table '''
@@ -237,7 +251,7 @@ class UserRegister(Model):
              username VARCHAR(20) NOT NULL UNIQUE,
              email VARCHAR(50) NOT NULL UNIQUE,
              password TEXT NOT NULL,
-             permission TEXT
+             permission INTEGER NOT NULL
         )"""
         self.execute_query(create_user_query)
 

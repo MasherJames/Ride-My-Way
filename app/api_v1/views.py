@@ -4,12 +4,13 @@ from flask_jwt_extended import (
     get_jwt_identity, jwt_required
 )
 from ..models import Ride, RideRequest, UserRegister
-from ..auth.auth_views import Validation
+from ..auth.auth_views import Validation, access_permission
 
 
 class RideOffers(Resource):
 
     @jwt_required
+    # @access_permission(2)
     def get(self):
         ''' Getting all the ride offers '''
         ride = Ride()
@@ -27,6 +28,7 @@ class PostRide(Resource):
                         help='This field cannot be left blank')
 
     @jwt_required
+    # @access_permission(1)
     def post(self):
         ''' Creating a ride offer '''
 
@@ -38,6 +40,7 @@ class PostRide(Resource):
 
         if not current_user:
             return {}, 401
+
         _from = request_data['from']
         to = request_data['to']
         depature = request_data['depature']
@@ -60,6 +63,7 @@ class PostRide(Resource):
 class RideOffer(Resource):
 
     @jwt_required
+    # @access_permission(1)
     def get(self, rideId):
         ''' Getting a specific ride offer depending on the id passed '''
         ride = Ride()
@@ -80,10 +84,10 @@ class RideOffer(Resource):
 class Request(Resource):
 
     @jwt_required
-    def post(self, rideId):
+    def post(self, ride_Id):
         '''Make a request to join a specific ride'''
         ride = Ride()
-        ride_offer = ride.get(rideId)
+        ride_offer = ride.get(ride_Id)
         passenger_name = get_jwt_identity()
         user = UserRegister()
         current_user = user.get_by_username(passenger_name)
@@ -95,24 +99,19 @@ class Request(Resource):
             return {'message': 'unauthorized'}, 401
 
         ride_request = RideRequest(current_user, ride_offer)
+
         ride_request.add()
 
         return {'message': 'ride offer request created succesfully'}, 201
 
     @jwt_required
-    def get(self, rideId):
+    def get(self, ride_Id):
         ''' Fetch requests made for a specific ride '''
 
-        ride = Ride()
-        ride_rq = ride.get(rideId)
-
-        if not ride_rq:
-            return {'message': 'ride request does not exist'}, 404
-
-        ride_rqst = RideRequest()
-        ride_requests = ride_rqst.get_all(rideId)
-
-        return [ride_request.to_dict() for ride_request in ride_requests], 200
+        ride_requests = RideRequest().get_all(ride_Id)
+        if ride_requests:
+            return ride_requests, 200
+        return {'message': 'This ride has not requests yet'}, 404
 
 
 class AcceptedRideRequest(Resource):
